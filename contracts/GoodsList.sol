@@ -42,10 +42,13 @@ contract GoodsList {
 
     event ProductStockUpdated(
         uint id,
-        uint unit
+        uint unit,
+        uint previousStock
     );
 
-    constructor() public {}
+    constructor() public {
+        addProduct("Product 1", "Food", "Air freight", 1641297030161, 72);
+    }
 
     function addProduct(string memory _name, string memory _category, string memory _shipment_type, uint _shipment_date, uint _cost_per_item) public {
         goodsCount++;
@@ -58,7 +61,7 @@ contract GoodsList {
         Product memory _product = products[_id];
         _product.shipment_status = _status;
         _product.condition = _condition;
-        _product.stock = _stock;
+        _product.stock += _stock;
         products[_id] = _product;
 
         emit ProductStatusUpdated(_id, _status, _condition, _stock);
@@ -66,17 +69,19 @@ contract GoodsList {
 
     function addToStock(uint _id, uint _unit) public {
         Product memory _product = products[_id];
+        uint previousStock = _product.stock;
         _product.stock = _product.stock + _unit;
         products[_id] = _product;
 
-        emit ProductStockUpdated(_id, _unit);
+        emit ProductStockUpdated(_id, _unit, previousStock);
     }
 
     function removeFromStock(uint _id, uint _unit) public {
         Product memory _product = products[_id];
+        uint previousStock = _product.stock;
         _product.stock = _product.stock - _unit;
         products[_id] = _product;
 
-        emit ProductStockUpdated(_id, _unit);
+        emit ProductStockUpdated(_id, _unit, previousStock);
     }
 }
