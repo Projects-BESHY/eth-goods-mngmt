@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goods Management System | Powered by Ethereum</title>
+
+    <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Goods Management System</h1>
+        <div class="row flex-lg-nowrap">
+            <div class="col">
+                <div class="e-tabs mb-3 px-3">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a class="nav-link active" href="#">Products</a></li>
+                    </ul>
+                </div>
+
+                <div class="row flex-lg-nowrap">
+                    <div class="col mb-3">
+                        <div class="e-panel card">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <h6 class="mr-2"><span>Products</span><small class="px-1">All goods in
+                                            inventory</small></h6>
+                                </div>
+                                <div class="e-table">
+                                    <div class="table-responsive table-lg mt-3">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Name</th>
+                                                    <th>Category</th>
+                                                    <th>Shipment Type</th>
+                                                    <th>Shipment Date</th>
+                                                    <th>Shipment Status</th>
+                                                    <th>Condition</th>
+                                                    <th>In Stock</th>
+                                                    <th>Cost per Item</th>
+                                                    <th>Update</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="products-list">
+                                                <tr class="product-row-template hidden">
+                                                    <td class="align-middle product-id"></td>
+                                                    <td class="align-middle text-center product-name"></td>
+                                                    <td class="text-nowrap align-middle product-category"></td>
+                                                    <td class="text-nowrap align-middle product-shipment-type"></td>
+                                                    <td class="text-nowrap align-middle product-shipment-date">
+                                                        <span></span>
+                                                    </td>
+                                                    <td class="text-center align-middle product-shipment-status"></td>
+                                                    <td class="text-center align-middle product-condition"></td>
+                                                    <td class="text-center align-middle product-stock"></td>
+                                                    <td class="text-center align-middle product-cost-per-item"></td>
+                                                    <td class="text-center align-middle product-edit">
+                                                        <button
+                                                            class="btn btn-sm btn-outline-secondary badge product-edit-btn"
+                                                            type="button" data-id="" data-toggle="modal"
+                                                            data-target="#product-form-modal" id="">Status</button>
+                                                        <button
+                                                            class="btn btn-sm btn-outline-secondary badge product-edit-stock-btn"
+                                                            type="button" data-id="" data-toggle="modal"
+                                                            data-target="#product-stock-form-modal" id="">Stock</button>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="text-center px-xl-3">
+                                    <button class="btn btn-success btn-block" type="button" data-toggle="modal"
+                                        data-target="#product-add-form-modal">New User</button>
+                                </div>
+                                <hr class="my-3">
+                                <div class="e-navlist e-navlist--active-bold">
+                                    <ul class="nav">
+                                        <li class="nav-item active"><a href=""
+                                                class="nav-link"><span>All</span>&nbsp;<small>/&nbsp;32</small></a></li>
+                                        <li class="nav-item"><a href=""
+                                                class="nav-link"><span>Active</span>&nbsp;<small>/&nbsp;16</small></a>
+                                        </li>
+                                        <li class="nav-item"><a href=""
+                                                class="nav-link"><span>Selected</span>&nbsp;<small>/&nbsp;0</small></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <hr class="my-3">
+                                <div>
+                                    <div class="form-group">
+                                        <label>Date from - to:</label>
+                                        <div>
+                                            <input id="dates-range" class="form-control flatpickr-input"
+                                                placeholder="01 Dec 17 - 27 Jan 18" type="text" readonly="readonly">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Search by Name:</label>
+                                        <div><input class="form-control w-100" type="text" placeholder="Name" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr class="my-3">
+                                <div class="">
+                                    <label>Status:</label>
+                                    <div class="px-2">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input" name="user-status"
+                                                id="users-status-disabled">
+                                            <label class="custom-control-label"
+                                                for="users-status-disabled">Disabled</label>
+                                        </div>
+                                    </div>
+                                    <div class="px-2">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input" name="user-status"
+                                                id="users-status-active">
+                                            <label class="custom-control-label" for="users-status-active">Active</label>
+                                        </div>
+                                    </div>
+                                    <div class="px-2">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input" name="user-status"
+                                                id="users-status-any" checked="">
+                                            <label class="custom-control-label" for="users-status-any">Any</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product update status form modal -->
+                <div class="modal fade" role="dialog" tabindex="-1" id="product-form-modal">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Update Shipment Status</h5>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="py-1">
+                                    <form onsubmit="App.updateProductStatus(); return false;" class="form" novalidate="">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Name</label>
+                                                            <input class="form-control modal-product-name" type="text"
+                                                                name="name" placeholder="" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Category</label>
+                                                            <input class="form-control modal-product-category"
+                                                                type="text" name="category" placeholder="" disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Shipment Type</label>
+                                                            <input class="form-control modal-product-shipment-type"
+                                                                type="text" name="shipment-type" placeholder=""
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Shipment Date</label>
+                                                            <input class="form-control modal-product-shipment-date"
+                                                                type="text" name="shipment-date" placeholder=""
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Shipment Status</label>
+                                                            <select class="custom-select modal-product-shipment-status"
+                                                                name="shipment-status" id="shipment-status">
+                                                                <option value="dispatched">Dispatched</option>
+                                                                <option value="pending">Pending</option>
+                                                                <option value="arrived">Arrived</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Condition</label>
+                                                            <select class="custom-select modal-product-condition"
+                                                                name="condition" id="condition">
+                                                                <option value="perfect">Perfect</option>
+                                                                <option value="damaged">Damaged</option>
+                                                                <option value="unknown" selected>Unknown</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>In Stock</label>
+                                                            <input class="form-control modal-product-stock"
+                                                                type="number" name="in-stock" placeholder="" value="0"
+                                                                step="5" min="0">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Cost per Item</label>
+                                                            <input class="form-control modal-product-cost-per-item"
+                                                                type="text" name="cost-per-item" placeholder=""
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col d-flex justify-content-end">
+                                                <button class="btn btn-primary modal-product-id" data-id=""
+                                                    type="submit">Save Changes</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product update stock form modal -->
+                <div class="modal fade" role="dialog" tabindex="-1" id="product-stock-form-modal">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Update Stock</h5>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="py-1">
+                                    <form onsubmit="App.updateProductStock(); return false;" class="form" novalidate="">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Name</label>
+                                                            <input class="form-control modal-product-name" type="text"
+                                                                name="name" placeholder="" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Category</label>
+                                                            <input class="form-control modal-product-category"
+                                                                type="text" name="category" placeholder="" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Cost per Item</label>
+                                                            <input class="form-control modal-product-cost-per-item"
+                                                                type="text" name="cost-per-item" placeholder=""
+                                                                disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>In Stock</label>
+                                                            <input class="form-control modal-product-stock"
+                                                                type="number" name="in-stock" placeholder="" value="0"
+                                                                step="5" min="0" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Unit</label>
+                                                            <input class="form-control modal-product-stock-unit"
+                                                                type="number" name="in-stock" placeholder="" value="0"
+                                                                step="5" min="0" >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Increase/Decrease</label>
+                                                            <select class="custom-select modal-product-stock-to"
+                                                                name="condition" id="condition">
+                                                                <option value="decrease">Decrease</option>
+                                                                <option value="increase">Increase</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col d-flex justify-content-end">
+                                                <button class="btn btn-primary modal-product-id" data-id=""
+                                                    type="submit">Save Changes</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product add new form modal -->
+                <div class="modal fade" role="dialog" tabindex="-1" id="product-add-form-modal">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add New Product</h5>
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="py-1">
+                                    <form onsubmit="App.createProduct(); return false;" class="form" novalidate="">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Name</label>
+                                                            <input class="form-control new-product-name" type="text"
+                                                                name="name" placeholder="Product name">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Category</label>
+                                                            <select class="custom-select new-product-category"
+                                                                name="category" id="category">
+                                                                <option value="food" selected>Food</option>
+                                                                <option value="cloth">Cloth</option>
+                                                                <option value="medicine">Medicine</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Shipment Type</label>
+                                                            <select class="custom-select new-product-shipment-type"
+                                                                name="shipment-type" id="shipment-type">
+                                                                <option value="air-freight" selected>Air Freight
+                                                                </option>
+                                                                <option value="ocean-freight">Ocean Freight</option>
+                                                                <option value="truck">Truck</option>
+                                                                <option value="rail">Rail</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Shipment Date</label>
+                                                            <input class="form-control  new-product-shipment-date"
+                                                                type="date" name="shipment-date" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Shipment Status</label>
+                                                            <select class="custom-select new-product-shipment-status"
+                                                                name="shipment-status" id="shipment-status" disabled>
+                                                                <option value="pending" selected>Pending</option>
+                                                                <option value="dispatched">Dispatched</option>
+                                                                <option value="arrived">Arrived</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Condition</label>
+                                                            <select class="custom-select new-product-condition"
+                                                                name="condition" id="condition" disabled>
+                                                                <option value="unknown" selected>Unknown</option>
+                                                                <option value="damaged">Damaged</option>
+                                                                <option value="perfect">Perfect</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>In Stock</label>
+                                                            <input class="form-control new-product-stock" type="number"
+                                                                name="in-stock" placeholder="0" value="0" step="5"
+                                                                min="0" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="form-group">
+                                                            <label>Cost per Item</label>
+                                                            <input class="form-control new-product-cost-per-item"
+                                                                type="text" name="cost-per-item" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col d-flex justify-content-end">
+                                                <button class="btn btn-primary" type="submit">Save Changes</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="vendor/web3/dist/web3.min.js"></script>
+    <script src="vendor/truffle-contract/dist/truffle-contract.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
