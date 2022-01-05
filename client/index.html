@@ -86,61 +86,75 @@
                             <div class="card-body">
                                 <div class="text-center px-xl-3">
                                     <button class="btn btn-success btn-block" type="button" data-toggle="modal"
-                                        data-target="#product-add-form-modal">New User</button>
+                                        data-target="#product-add-form-modal">New Product</button>
                                 </div>
-                                <hr class="my-3">
+                                <hr class="my-2">
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Search by Name</label>
+                                    <div>
+                                        <input class="form-control w-100" type="text" placeholder="Name"
+                                            id="name-select">
+                                    </div>
+                                </div>
+                                <hr class="my-2">
                                 <div class="e-navlist e-navlist--active-bold">
-                                    <ul class="nav">
-                                        <li class="nav-item active"><a href=""
-                                                class="nav-link"><span>All</span>&nbsp;<small>/&nbsp;32</small></a></li>
-                                        <li class="nav-item"><a href=""
-                                                class="nav-link"><span>Active</span>&nbsp;<small>/&nbsp;16</small></a>
-                                        </li>
-                                        <li class="nav-item"><a href=""
-                                                class="nav-link"><span>Selected</span>&nbsp;<small>/&nbsp;0</small></a>
-                                        </li>
-                                    </ul>
+                                    <h6>Shipment Status</h6>
+                                    <div>
+                                        <select class="custom-select" name="status-select" id="status-select">
+                                            <option value="" selected>Choose...</option>
+                                            <option value="arrived">Arrived</option>
+                                            <option value="dispatched">Dispatched</option>
+                                            <option value="pending">Pending</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <hr class="my-3">
-                                <div>
+                                <div class="e-navlist e-navlist--active-bold my-2">
+                                    <h6>Shipment Type</h6>
+                                    <div>
+                                        <select class="custom-select" name="type-select" id="type-select">
+                                            <option value="" selected>Choose...</option>
+                                            <option value="air-freight">Air Freight</option>
+                                            <option value="ocean-freight">Ocean Freight</option>
+                                            <option value="truck">Truck</option>
+                                            <option value="rail">Rail</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="e-navlist e-navlist--active-bold my-2">
+                                    <h6>Condition</h6>
+                                    <div>
+                                        <select class="custom-select" name="condition-select" id="condition-select">
+                                            <option value="" selected>Choose...</option>
+                                            <option value="perfect">Perfect</option>
+                                            <option value="damaged">Damaged</option>
+                                            <option value="unknown">Unknown</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="e-navlist e-navlist--active-bold my-2">
+                                    <h6>Category</h6>
+                                    <div>
+                                        <select class="custom-select" name="category-select" id="category-select">
+                                            <option value="" selected>Choose...</option>
+                                            <option value="food">Food</option>
+                                            <option value="cloth">Cloth</option>
+                                            <option value="medicine">Medicine</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="my-2">
                                     <div class="form-group">
-                                        <label>Date from - to:</label>
+                                        <h6>Date</h6>
                                         <div>
-                                            <input id="dates-range" class="form-control flatpickr-input"
-                                                placeholder="01 Dec 17 - 27 Jan 18" type="text" readonly="readonly">
+                                            <input id="date-select" class="form-control flatpickr-input" type="date">
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Search by Name:</label>
-                                        <div><input class="form-control w-100" type="text" placeholder="Name" value="">
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <hr class="my-3">
-                                <div class="">
-                                    <label>Status:</label>
-                                    <div class="px-2">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" class="custom-control-input" name="user-status"
-                                                id="users-status-disabled">
-                                            <label class="custom-control-label"
-                                                for="users-status-disabled">Disabled</label>
-                                        </div>
-                                    </div>
-                                    <div class="px-2">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" class="custom-control-input" name="user-status"
-                                                id="users-status-active">
-                                            <label class="custom-control-label" for="users-status-active">Active</label>
-                                        </div>
-                                    </div>
-                                    <div class="px-2">
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" class="custom-control-input" name="user-status"
-                                                id="users-status-any" checked="">
-                                            <label class="custom-control-label" for="users-status-any">Any</label>
-                                        </div>
-                                    </div>
+                                <div class="row mx-0">
+                                    <button class="btn btn-outline-danger col mr-2" id="btn-clear">Clear</button>
+                                    <button class="btn btn-info col" id="btn-filter">Filter</button>
                                 </div>
                             </div>
                         </div>
@@ -159,7 +173,8 @@
                             </div>
                             <div class="modal-body">
                                 <div class="py-1">
-                                    <form onsubmit="App.updateProductStatus(); return false;" class="form" novalidate="">
+                                    <form onsubmit="App.updateProductStatus(); return false;" class="form"
+                                        novalidate="">
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row">
@@ -240,7 +255,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col d-flex justify-content-end">
-                                                <button class="btn btn-primary modal-product-id" data-id=""
+                                                <button class="btn btn-outline-danger modal-product-id" data-id=""
                                                     type="submit">Save Changes</button>
                                             </div>
                                         </div>
@@ -306,7 +321,7 @@
                                                             <label>Unit</label>
                                                             <input class="form-control modal-product-stock-unit"
                                                                 type="number" name="in-stock" placeholder="" value="0"
-                                                                step="5" min="0" >
+                                                                step="5" min="0">
                                                         </div>
                                                     </div>
                                                     <div class="col">
@@ -324,7 +339,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col d-flex justify-content-end">
-                                                <button class="btn btn-primary modal-product-id" data-id=""
+                                                <button class="btn btn-outline-danger modal-product-id" data-id=""
                                                     type="submit">Save Changes</button>
                                             </div>
                                         </div>
@@ -436,7 +451,8 @@
                                         </div>
                                         <div class="row">
                                             <div class="col d-flex justify-content-end">
-                                                <button class="btn btn-primary" type="submit">Save Changes</button>
+                                                <button class="btn btn-outline-success" type="submit">Save
+                                                    Changes</button>
                                             </div>
                                         </div>
                                     </form>
@@ -459,6 +475,7 @@
     <script src="vendor/web3/dist/web3.min.js"></script>
     <script src="vendor/truffle-contract/dist/truffle-contract.js"></script>
     <script src="app.js"></script>
+    <script src="filter.js"></script>
 </body>
 
 </html>

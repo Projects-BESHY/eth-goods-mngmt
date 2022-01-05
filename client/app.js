@@ -80,6 +80,7 @@ App = {
             const productCostPerItem = product[8].toNumber()
 
             const $newProductTemplate = $productTemplate.clone()
+            $newProductTemplate.removeClass('hidden')
             $newProductTemplate.find('.product-id').html(productId)
             $newProductTemplate.find('.product-name').html(productName.substr(0,1).toUpperCase() + productName.substr(1))
             $newProductTemplate.find('.product-category').html(productCategory.substr(0,1).toUpperCase() + productCategory.substr(1))
