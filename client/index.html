@@ -173,7 +173,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="py-1">
-                                    <form onsubmit="App.updateProductStatus(); return false;" class="form"
+                                    <form onsubmit="app.updateProductStatus(); return false;" class="form"
                                         novalidate="">
                                         <div class="row">
                                             <div class="col">
@@ -279,7 +279,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="py-1">
-                                    <form onsubmit="App.updateProductStock(); return false;" class="form" novalidate="">
+                                    <form onsubmit="app.updateProductStock(); return false;" class="form" novalidate="">
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row">
@@ -363,7 +363,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="py-1">
-                                    <form onsubmit="App.createProduct(); return false;" class="form" novalidate="">
+                                    <form onsubmit="app.createProduct(); return false;" class="form" novalidate="">
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row">
@@ -474,7 +474,9 @@
     <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="vendor/web3/dist/web3.min.js"></script>
     <script src="vendor/truffle-contract/dist/truffle-contract.js"></script>
-    <script src="app.js"></script>
+    <!-- <script type="module" src="./iterator/Iterator.js"></script>
+    <script type="module" src="./iterator/ProductsIterator.js"></script> -->
+    <script type="module" src="app.js"></script>
     <script src="filter.js"></script>
 </body>
 

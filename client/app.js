@@ -1,114 +1,40 @@
-App = {
-    loading: false,
-    contracts: {},
+import { ProductList } from './iterator/ProductList.js'
+import { ProductCard } from './builder/ProductCard.js'
+import { LoadService } from './facade/LoadService.js'
 
-    load: async () => {
-        await App.loadWeb3()
-        await App.loadAccount()
-        await App.loadContract()
-        await App.render()
-    },
+class App {
+    contracts = {}
 
-    loadWeb3: async () => {
-        if (typeof web3 !== 'undefined') {
-            App.web3Provider = web3.currentProvider
-            web3 = new Web3(web3.currentProvider)
-        } else {
-            window.alert("Please connect to Metamask.")
-        }
-        // Modern dapp browsers...
-        if (window.ethereum) {
-            window.web3 = new Web3(ethereum)
-            try {
-                // Request account access if needed
-                await ethereum.enable()
-                // Acccounts now exposed
-                web3.eth.sendTransaction({/* ... */ })
-            } catch (error) {
-                // User denied account access...
-            }
-        }
-        // Legacy dapp browsers...
-        else if (window.web3) {
-            App.web3Provider = web3.currentProvider
-            window.web3 = new Web3(web3.currentProvider)
-            // Acccounts always exposed
-            web3.eth.sendTransaction({/* ... */ })
-        }
-        // Non-dapp browsers...
-        else {
-            console.log('Non-Ethereum browser detected. You should consider trying MetaMask!')
-        }
-    },
+    async load() {
+        // Load essential services: web3, account, contract
+        const loadService = new LoadService(this);
+        await loadService.load();
 
-    loadAccount: async () => {
-        App.account = web3.eth.accounts[0]
-        web3.eth.defaultAccount = web3.eth.accounts[0];
-    },
+        // Create ProductList object using goodsList in the contract (JS representation of the solidity contract)
+        this.productList = new ProductList(this.goodsList, await this.goodsList.products, await this.goodsList.goodsCount());
 
-    loadContract: async () => {
-        const goodsList = await $.getJSON('GoodsList.json')
-        App.contracts.GoodsList = TruffleContract(goodsList)
-        App.contracts.GoodsList.setProvider(App.web3Provider)
-        App.goodsList = await App.contracts.GoodsList.deployed()
-    },
+        // Display list of products on html
+        await this.renderProducts()
+    }
 
-    render: async () => {
-        if (App.loading) {
-            return
-        }
+    async renderProducts() {
+        // Create an iterator for productsList
+        const productIterator = this.productList.createIterator();
 
-        App.setLoading(true)
-        await App.renderProducts()
-        App.setLoading(false)
-    },
+        // Iterate, construct, and display UI for each product
+        while (productIterator.hasNext()) {
+            let product = await productIterator.current();
+            let card = (new ProductCard(product)).constructUI(this.editProduct);    // Create builder for a product and build the UI using the builder
+            $('.products-list').append(card);
+            card.show();
+            productIterator.next();
+        } 
+    }
 
-    renderProducts: async () => {
-        const goodsCount = await App.goodsList.goodsCount()
-        const $productTemplate = $('.product-row-template')
-
-        for (let i = 1; i <= goodsCount; i++) {
-            const product = await App.goodsList.products(i)
-            const productId = product[0].toNumber()
-            const productName = product[1]
-            const productCategory = product[2]
-            const productShipmentType = product[3]
-            const productShipmentDate = (new Date(product[4].toNumber() * 1000))
-            const productShipmentStatus = product[5]
-            const productCondition = product[6]
-            const productStock = product[7].toNumber()
-            const productCostPerItem = product[8].toNumber()
-
-            const $newProductTemplate = $productTemplate.clone()
-            $newProductTemplate.removeClass('hidden')
-            $newProductTemplate.find('.product-id').html(productId)
-            $newProductTemplate.find('.product-name').html(productName.substr(0,1).toUpperCase() + productName.substr(1))
-            $newProductTemplate.find('.product-category').html(productCategory.substr(0,1).toUpperCase() + productCategory.substr(1))
-            $newProductTemplate.find('.product-shipment-type').html(productShipmentType.substr(0,1).toUpperCase() + productShipmentType.substr(1))
-            $newProductTemplate.find('.product-shipment-date').html(productShipmentDate.toLocaleDateString('en-GB', {
-                day: 'numeric', month: 'short', year: 'numeric'
-            }))
-            $newProductTemplate.find('.product-shipment-status').html(productShipmentStatus.substr(0,1).toUpperCase() + productShipmentStatus.substr(1))
-            $newProductTemplate.find('.product-condition').html(productCondition.substr(0,1).toUpperCase() + productCondition.substr(1))
-            $newProductTemplate.find('.product-stock').html(productStock)
-            $newProductTemplate.find('.product-cost-per-item').html(productCostPerItem)
-            $newProductTemplate.find('.product-edit').find('.product-edit-btn')
-                .attr('data-id', productId)
-                .prop('id', productId)
-                .on('click', App.editProduct)
-            $newProductTemplate.find('.product-edit').find('.product-edit-stock-btn')
-                .attr('data-id', productId)
-                .prop('id', productId)
-                .on('click', App.editProduct)
-
-            $('.products-list').append($newProductTemplate)
-            $newProductTemplate.show()
-        }
-    },
-
-    editProduct: async (e) => {
-        const productId = e.target.getAttribute('data-id')
-        const product = await App.goodsList.products(productId)
+    // function to populate editing modal boxes
+    async editProduct(e) {
+        const productId = Number(e.target.getAttribute('data-id'));
+        const product = await app.goodsList.products(productId);
         const productName = product[1]
         const productCategory = product[2]
         const productShipmentType = product[3]
@@ -117,7 +43,8 @@ App = {
         const productCondition = product[6]
         const productStock = product[7].toNumber()
         const productCostPerItem = product[8].toNumber()
-        
+
+
         $('.modal-product-id').attr('data-id', productId)
         $('.modal-product-name').attr('value', productName)
         $('.modal-product-category').attr('value', productCategory)
@@ -129,54 +56,27 @@ App = {
         $('.modal-product-condition').val(productCondition)
         $('.modal-product-stock').attr('value', productStock)
         $('.modal-product-cost-per-item').attr('value', productCostPerItem)
-    },
+    }
 
-    updateProductStatus: async () => {
-        App.setLoading(true)
-        const productId = Number($('.modal-product-id').attr('data-id'))
-        const newShipmentStatus = $('.modal-product-shipment-status').val()
-        const newCondition = $('.modal-product-condition').val()
-        const newStock = $('.modal-product-stock').val()
-
-        await App.goodsList.updateShipmentStatus(productId, newShipmentStatus, newCondition, newStock)
-
+    async updateProductStatus() {
+        await this.productList.updateProductStatus();
         window.location.reload()
-    },
+    }
 
-    updateProductStock: async () => {
-        App.setLoading(true)
-        const productId = Number($('.modal-product-id').attr('data-id'))
-        const unit = Number($('.modal-product-stock-unit').val())
-        const stockTo = $('.modal-product-stock-to').val()
-
-        if (stockTo === 'increase')
-            await App.goodsList.addToStock(productId, unit)
-        else
-            await App.goodsList.removeFromStock(productId, unit)
-        
+    async updateProductStock() {
+        await this.productList.updateProductStock();
         window.location.reload()
-    },
+    }
 
-    createProduct: async() => {
-        App.setLoading(true)
-        const newProductName = $('.new-product-name').val()
-        const newProductCategory = $('.new-product-category').val()
-        const newProductShipmentType = $('.new-product-shipment-type').val()
-        const newProductShipmentDate = (new Date($('.new-product-shipment-date').val()).getTime()) / 1000
-        const newProductCostPerItem = $('.new-product-cost-per-item').val()
-
-        await App.goodsList.addProduct(newProductName, newProductCategory, newProductShipmentType, newProductShipmentDate, newProductCostPerItem)
-
+    async createProduct() {
+        await this.productList.createProduct();
         window.location.reload()
-    },
-
-    setLoading: (boolean) => {
-        App.loading = boolean
-    },
+    }
 }
 
 $(() => {
     $(window).load(() => {
-        App.load()
+        window.app = new App();
+        app.load();
     })
 })
