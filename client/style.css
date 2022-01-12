@@ -15,6 +15,14 @@ body {
     display: none !important;
 }
 
+.blue{
+    color: rgb(42, 148, 151);
+}
+
+.yellow{
+    color: rgb(255, 201, 0);
+}
+
 h6:not(.mr-2){
     font-size: .9em !important;
 }

@@ -1,7 +1,7 @@
 import { ProductList } from './iterator/ProductList.js'
-import { ProductCard } from './builder/ProductCard.js'
 import { LoadService } from './facade/LoadService.js'
-
+import { ProductCardBlue } from './factory/ProductCardBlue.js'
+import { ProductCardYellow } from './factory/ProductCardYellow.js'
 class App {
     contracts = {}
 
@@ -24,7 +24,7 @@ class App {
         // Iterate, construct, and display UI for each product
         while (productIterator.hasNext()) {
             let product = await productIterator.current();
-            let card = (new ProductCard(product)).constructUI(this.editProduct);    // Create builder for a product and build the UI using the builder
+            let card = (new ProductCardBlue(product)).constructUI(this.editProduct);    // Create UI constructor for a product and build the UI using the factory method constructUI
             $('.products-list').append(card);
             card.show();
             productIterator.next();
@@ -77,6 +77,6 @@ class App {
 $(() => {
     $(window).load(() => {
         window.app = new App();
-        app.load();
+        window.app.load();
     })
 })

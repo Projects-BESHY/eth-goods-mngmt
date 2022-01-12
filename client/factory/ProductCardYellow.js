@@ -1,7 +1,10 @@
-class ProductCard {
+import { ProductCard } from "./ProductCard.js";
+
+class ProductCardYellow extends ProductCard {
     product;
 
     constructor(product) {
+        super();
         this.product = product;
     }
 
@@ -19,6 +22,7 @@ class ProductCard {
 
         const $newProductTemplate = $productTemplate.clone()
         $newProductTemplate.removeClass('hidden')
+        $newProductTemplate.addClass('yellow');
         $newProductTemplate.find('.product-id').html(productId)
         $newProductTemplate.find('.product-name').html(productName.substr(0, 1).toUpperCase() + productName.substr(1))
         $newProductTemplate.find('.product-category').html(productCategory.substr(0, 1).toUpperCase() + productCategory.substr(1))
@@ -42,5 +46,4 @@ class ProductCard {
         return $newProductTemplate;
     }
 }
-
-export { ProductCard };
+export { ProductCardYellow };
