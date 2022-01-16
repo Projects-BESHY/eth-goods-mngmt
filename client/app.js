@@ -11,7 +11,7 @@ class App {
         await loadService.load();
 
         // Create ProductList object using goodsList in the contract (JS representation of the solidity contract)
-        this.productList = new ProductList(this.goodsList, await this.goodsList.products, await this.goodsList.goodsCount());
+        this.productList = new ProductList(this.goodsList, await this.goodsList.products, await this.goodsList.goodsCount(), this.account);
 
         // Display list of products on html
         await this.renderProducts()
@@ -40,9 +40,9 @@ class App {
         const productShipmentType = product[3]
         const productShipmentDate = (new Date(product[4].toNumber() * 1000))
         const productShipmentStatus = product[5]
-        const productCondition = product[6]
-        const productStock = product[7].toNumber()
-        const productCostPerItem = product[8].toNumber()
+        const productStock = product[6].toNumber()
+        const productCostPerItem = product[7].toNumber()
+        const productLastUpdatedBy = product[8]
 
 
         $('.modal-product-id').attr('data-id', productId)
@@ -53,7 +53,7 @@ class App {
             day: 'numeric', month: 'short', year: 'numeric'
         }))
         $('.modal-product-shipment-status').val(productShipmentStatus)
-        $('.modal-product-condition').val(productCondition)
+        $('.modal-product-last-updated-by').val(productLastUpdatedBy)
         $('.modal-product-stock').attr('value', productStock)
         $('.modal-product-cost-per-item').attr('value', productCostPerItem)
     }
@@ -75,8 +75,18 @@ class App {
 }
 
 $(() => {
-    $(window).load(() => {
+    $(window).load(async () => {
         window.app = new App();
-        window.app.load();
+        await window.app.load();
+        $('.new-product-last-updated-by').val(app.account);
+
+        let accounts = await app.goodsList.accounts;
+        let accountsLength = await app.goodsList.getLength();
+        for (let i = 0; i < accountsLength; i++) {
+            let option = document.createElement('option');
+            option.setAttribute('value', await accounts(i));
+            option.innerHTML = await accounts(i);
+            $('#last-updated-by-select').append(option);
+        }
     })
 })

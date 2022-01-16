@@ -4,11 +4,13 @@ class ProductList {
     contract;
     products;
     productsCount;
+    account;
 
-    constructor(contract, products, productsCount) {
+    constructor(contract, products, productsCount, account) {
         this.contract = contract;
         this.products = products;
         this.productsCount = productsCount;
+        this.account = account;
     }
 
     createIterator() {
@@ -22,16 +24,15 @@ class ProductList {
         const newProductShipmentDate = (new Date($('.new-product-shipment-date').val()).getTime()) / 1000
         const newProductCostPerItem = $('.new-product-cost-per-item').val()
 
-        await this.contract.addProduct(newProductName, newProductCategory, newProductShipmentType, newProductShipmentDate, newProductCostPerItem)
+        await this.contract.addProduct(newProductName, newProductCategory, newProductShipmentType, newProductShipmentDate, newProductCostPerItem, this.account)
     }
 
     async updateProductStatus() {
         const productId = Number($('.modal-product-id').attr('data-id'))
         const newShipmentStatus = $('.modal-product-shipment-status').val()
-        const newCondition = $('.modal-product-condition').val()
         const newStock = $('.modal-product-stock').val()
 
-        await this.contract.updateShipmentStatus(productId, newShipmentStatus, newCondition, newStock)
+        await this.contract.updateShipmentStatus(productId, newShipmentStatus, newStock, this.account)
     }
 
     async updateProductStock() {
@@ -40,9 +41,9 @@ class ProductList {
         const stockTo = $('.modal-product-stock-to').val()
 
         if (stockTo === 'increase')
-            await this.contract.addToStock(productId, unit)
+            await this.contract.addToStock(productId, unit, this.account)
         else
-            await this.contract.removeFromStock(productId, unit)
+            await this.contract.removeFromStock(productId, unit, this.account)
     }
 }
 

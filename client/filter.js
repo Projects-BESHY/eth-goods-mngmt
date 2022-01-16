@@ -3,7 +3,7 @@ const clearBtn = document.getElementById('btn-clear');
 const nameSelect = document.getElementById('name-select');
 const statusSelect = document.getElementById('status-select');
 const typeSelect = document.getElementById('type-select');
-const conditionSelect = document.getElementById('condition-select');
+const lastUpdatedBySelect = document.getElementById('last-updated-by-select');
 const categorySelect = document.getElementById('category-select');
 const dateSelect = document.getElementById('date-select');
 let productsList;
@@ -45,8 +45,8 @@ function getFilters() {
         filters.set('status', statusSelect.value.toLowerCase());
     if (typeSelect.value !== '')
         filters.set('type', typeSelect.value.toLowerCase());
-    if (conditionSelect.value !== '')
-        filters.set('condition', conditionSelect.value.toLowerCase());
+    if (lastUpdatedBySelect.value !== '')
+        filters.set('lastUpdatedBy', lastUpdatedBySelect.value.toLowerCase().substr(0, 10) + '...');
     if (categorySelect.value !== '')
         filters.set('category', categorySelect.value.toLowerCase());
     if (dateSelect.value !== '')
@@ -63,7 +63,7 @@ function clearFilters() {
     nameSelect.value = '';
     statusSelect.value = '';
     typeSelect.value = '';
-    conditionSelect.value = '';
+    lastUpdatedBySelect.value = '';
     categorySelect.value = '';
     dateSelect.value = '';
 }

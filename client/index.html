@@ -43,7 +43,7 @@
                                                     <th>Shipment Type</th>
                                                     <th>Shipment Date</th>
                                                     <th>Shipment Status</th>
-                                                    <th>Condition</th>
+                                                    <th>Last Updated By</th>
                                                     <th>In Stock</th>
                                                     <th>Cost per Item</th>
                                                     <th>Update</th>
@@ -59,7 +59,7 @@
                                                         <span></span>
                                                     </td>
                                                     <td class="text-center align-middle product-shipment-status"></td>
-                                                    <td class="text-center align-middle product-condition"></td>
+                                                    <td class="text-center align-middle product-last-updated-by"></td>
                                                     <td class="text-center align-middle product-stock"></td>
                                                     <td class="text-center align-middle product-cost-per-item"></td>
                                                     <td class="text-center align-middle product-edit">
@@ -121,13 +121,11 @@
                                     </div>
                                 </div>
                                 <div class="e-navlist e-navlist--active-bold my-2">
-                                    <h6>Condition</h6>
+                                    <h6>Last Updated By</h6>
                                     <div>
-                                        <select class="custom-select" name="condition-select" id="condition-select">
+                                        <select class="custom-select" name="last-updated-by-select" id="last-updated-by-select">
                                             <option value="" selected>Choose...</option>
-                                            <option value="perfect">Perfect</option>
-                                            <option value="damaged">Damaged</option>
-                                            <option value="unknown">Unknown</option>
+                                            
                                         </select>
                                     </div>
                                 </div>
@@ -225,13 +223,8 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="form-group">
-                                                            <label>Condition</label>
-                                                            <select class="custom-select modal-product-condition"
-                                                                name="condition" id="condition">
-                                                                <option value="perfect">Perfect</option>
-                                                                <option value="damaged">Damaged</option>
-                                                                <option value="unknown" selected>Unknown</option>
-                                                            </select>
+                                                            <label>Last Updated By</label>
+                                                            <input class="form-control modal-product-last-updated-by" type="text" value="" name="last-updated-by" id="last-updated-by" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col">
@@ -403,7 +396,7 @@
                                                     <div class="col">
                                                         <div class="form-group">
                                                             <label>Shipment Date</label>
-                                                            <input class="form-control  new-product-shipment-date"
+                                                            <input class="form-control new-product-shipment-date"
                                                                 type="date" name="shipment-date" placeholder="">
                                                         </div>
                                                     </div>
@@ -422,13 +415,8 @@
                                                 <div class="row">
                                                     <div class="col">
                                                         <div class="form-group">
-                                                            <label>Condition</label>
-                                                            <select class="custom-select new-product-condition"
-                                                                name="condition" id="condition" disabled>
-                                                                <option value="unknown" selected>Unknown</option>
-                                                                <option value="damaged">Damaged</option>
-                                                                <option value="perfect">Perfect</option>
-                                                            </select>
+                                                            <label>Last Updated By</label>
+                                                            <input class="form-control new-product-last-updated-by" type="text" value="" name="last-updated-by" id="last-updated-by" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col">

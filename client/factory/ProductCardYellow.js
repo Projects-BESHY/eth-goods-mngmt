@@ -16,9 +16,9 @@ class ProductCardYellow extends ProductCard {
         const productShipmentType = this.product[3]
         const productShipmentDate = (new Date(this.product[4].toNumber() * 1000))
         const productShipmentStatus = this.product[5]
-        const productCondition = this.product[6]
-        const productStock = this.product[7].toNumber()
-        const productCostPerItem = this.product[8].toNumber()
+        const productStock = this.product[6].toNumber()
+        const productCostPerItem = this.product[7].toNumber()
+        const productLastUpdatedBy = this.product[8]
 
         const $newProductTemplate = $productTemplate.clone()
         $newProductTemplate.removeClass('hidden')
@@ -31,7 +31,7 @@ class ProductCardYellow extends ProductCard {
             day: 'numeric', month: 'short', year: 'numeric'
         }))
         $newProductTemplate.find('.product-shipment-status').html(productShipmentStatus.substr(0, 1).toUpperCase() + productShipmentStatus.substr(1))
-        $newProductTemplate.find('.product-condition').html(productCondition.substr(0, 1).toUpperCase() + productCondition.substr(1))
+        $newProductTemplate.find('.product-last-updated-by').html(productLastUpdatedBy.substr(0, 10) + '...')
         $newProductTemplate.find('.product-stock').html(productStock)
         $newProductTemplate.find('.product-cost-per-item').html(productCostPerItem)
         $newProductTemplate.find('.product-edit').find('.product-edit-btn')
